@@ -1,11 +1,8 @@
 package math
 
-import (
-	// "fmt"
-)
+// "fmt"
 
-// Implementationo of Insertion Sort algorithm
-// Insertion Sort algorithm is creating a new list and progressively moving elements from the original list 
+// SortInsertion implements the Insertion Sort algorithm which is creating a new list and progressively moving elements from the original list
 // to the correct position in the new sorted list
 //
 // Complexity analysis:

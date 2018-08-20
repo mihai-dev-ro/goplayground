@@ -3,6 +3,10 @@ package math
 // SortHeapArray implements the Heap Sort algorithm by using an array to hold the
 // heap data structure, given that the heap tree is a complete binary tree and it
 // requires that each level in the tree is complete before filling up nodes on a lower level
+//
+// Complexity analysis
+//    - time complexity:
+//    - space complexity: O(1)
 func SortHeapArray(list []int) []int {
 	// fmt.Printf("Input list: %v\n", list)
 
@@ -11,40 +15,44 @@ func SortHeapArray(list []int) []int {
 		return list
 	}
 
-	result := make([]int, len(list))
-
-	tempList := list
 	// heapify
-	heapify(list, len(list)/2)
-	index := len(result) - 1
-	for len(tempList) > 0 {
-		result[index] = tempList[0]
-		index--
+	n := len(list)
+	for i := n/2 - 1; i >= 0; i-- {
+		heapify(list, i, n)
+	}
 
-		//create a new slice by removing the first element
-		tempList = tempList[1:]
-		// heapify
-		heapify(tempList, len(tempList)/2)
+	last := len(list) - 1
+	for last >= 0 {
+		list[0], list[last] = list[last], list[0]
+
+		// re-construct the heap data
+		heapify(list, 0, last)
+		last--
 	}
 
 	// fmt.Printf("Input list after heapify: %v\n", result)
-	return result
+	return list
 }
 
-func heapify(list []int, iMax int) {
-	if iMax <= 1 {
-		return
+// heapify the sub-tree with the root at iNode
+func heapify(list []int, iNode int, n int) {
+	largest := iNode
+	left := 2*iNode + 1
+	right := 2*iNode + 2
+
+	// get the largest among the 3 nodes and put it as parent
+	if left < n && list[largest] < list[left] {
+		largest = left
+	}
+	if right < n && list[largest] < list[right] {
+		largest = right
 	}
 
-	for i := 0; i < iMax; i++ {
-		if 2*i+1 < len(list) && list[i] < list[2*i+1] {
-			list[i], list[2*i+1] = list[2*i+1], list[i]
-		}
-		if 2*i+2 < len(list) && list[i] < list[2*i+2] {
-			list[i], list[2*i+2] = list[2*i+2], list[i]
-		}
+	if largest != iNode {
+		list[largest], list[iNode] = list[iNode], list[largest]
+
+		heapify(list, largest, n)
 	}
 
-	heapify(list, iMax/2)
 	return
 }

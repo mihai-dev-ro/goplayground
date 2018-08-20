@@ -1,17 +1,14 @@
 package math
 
-import (
-	// "fmt"
-)
+// "fmt"
 
-// Implementation of Merge Sort algorithm
-// Merge Sort algorithm is a Divide & Conquer type of algorithm that recursively splits the list into sub-lists until 
-// it reaches an atomic level of 1-item list 
+// SortMerge implements Merge Sort algorithm which is a Divide & Conquer type of algorithm that recursively splits the list into sub-lists until
+// it reaches an atomic level of 1-item list
 // followed by a recursive merging of the smaller sub-lists back into larger lists
 //
 // Complexity analysis
 //    - time complexity: O(n * log(n))
-//    - space complexity: O(n) 
+//    - space complexity: O(n)
 func SortMerge(list []int) []int {
 	// fmt.Printf("Input list: %v\n", list)
 
@@ -39,16 +36,16 @@ func SortMerge(list []int) []int {
 	result := merge(SortMerge(list[:splitIndex]), SortMerge(list[splitIndex:]))
 
 	// CONCLUSION:
-	// running several tests with very large lists 
+	// running several tests with very large lists
 	// revealed that concurrency does not improve the speed
 
 	// fmt.Printf("Merge sorted list: %v\n", result)
 
-	return result;
+	return result
 }
 
 func merge(a, b []int) []int {
-	result := make([]int, len(a) + len(b))
+	result := make([]int, len(a)+len(b))
 
 	var i, j = 0, 0
 	for i < len(a) && j < len(b) {
@@ -61,11 +58,14 @@ func merge(a, b []int) []int {
 		}
 	}
 
-	for i < len(a) { result[i+j] = a[i]; i++ }
-	for j < len(b) { result[i+j] = b[j]; j++ }
+	for i < len(a) {
+		result[i+j] = a[i]
+		i++
+	}
+	for j < len(b) {
+		result[i+j] = b[j]
+		j++
+	}
 
-	return result;
+	return result
 }
-
-
-

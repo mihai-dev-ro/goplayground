@@ -1,15 +1,12 @@
 package math
 
-import (
-	//"fmt"
-)
+//"fmt"
 
-// Implemenentation of the Bubble Sort Algorithm.
-// Bubble sort algorithm is resolving the sorting of a list of elements by progressively "bubbling up" the largest values
-// to the end of the list. It implies putting adjacent values in the correct order and perform as many iterations as 
+// SortBubble implements the sort algorithm which is resolving the sorting of a list of elements by progressively "bubbling up" the largest values
+// to the end of the list. It implies putting adjacent values in the correct order and perform as many iterations as
 // necessary until there is no swapping required. The iteration where there "no movement" signals the end of the algorithm
 //
-// Complexity analysis: 
+// Complexity analysis:
 //    - time complexity : O(n*n)
 //    - space complexity : O(1)
 func SortBubble(list []int) []int {
@@ -20,10 +17,10 @@ func SortBubble(list []int) []int {
 	}
 
 	swapPerformed := true // monitors if any swaping performed
-	for ; swapPerformed ; {
+	for swapPerformed {
 		swapPerformed = false // reset flag
 
-		for i := 0; i < len(list) - 1; i++ {
+		for i := 0; i < len(list)-1; i++ {
 			if list[i] > list[i+1] {
 				list[i], list[i+1] = list[i+1], list[i]
 
@@ -34,4 +31,4 @@ func SortBubble(list []int) []int {
 
 	// fmt.Printf("Bubble sorted list: %v\n", list)
 	return list
-} 
+}

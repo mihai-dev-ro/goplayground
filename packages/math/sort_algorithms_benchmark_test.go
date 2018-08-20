@@ -8,19 +8,19 @@ import (
 	"time"
 )
 
-var listSize = 1 << 12
+var listSize = 1 << 16
 var MaxUInt = ^uint(0)
 var MaxInt = int(MaxUInt >> 52)
 
 var sortAlgorithms = map[string]interface{}{
-	"SortBubble":    SortBubble,
-	"SortMerge":     SortMerge,
-	"SortQuicksort": SortQuicksort,
-	"SortSelection": SortSelection,
-	"SortInsertion": SortInsertion,
-	"SortHeap":      SortHeap,
-	"SortHeapArray": SortHeapArray,
-	//"SortHeapArrayNotMine": SortHeapArrayNotMine,
+	"SortBubble":           SortBubble,
+	"SortMerge":            SortMerge,
+	"SortQuicksort":        SortQuicksort,
+	"SortSelection":        SortSelection,
+	"SortInsertion":        SortInsertion,
+	"SortHeap":             SortHeap,
+	"SortHeapArray":        SortHeapArray,
+	"SortHeapArrayNotMine": SortHeapArrayNotMine,
 }
 
 func TestSortAgorithmsEficiency(t *testing.T) {
@@ -60,7 +60,7 @@ func TestSortAgorithmsEficiency(t *testing.T) {
 	start := time.Now()
 	sort.Ints(results[last])
 	end := time.Now()
-	fmt.Printf("Duration sort implementation in Go: %v\n", end.Sub(start))
+	fmt.Printf("Duration implementation of Go standard sort: %v\n", end.Sub(start))
 
 	// make sure all results are equal to the list sorted with the sorted available in the sort package
 	for i := 0; i < len(results)-1; i++ {
@@ -72,25 +72,5 @@ func TestSortAgorithmsEficiency(t *testing.T) {
 				"Equal to", results[last],
 			)
 		}
-	}
-}
-
-func TestSortHeapArrayNotMine(t *testing.T) {
-	type TestPair struct {
-		input, expected []int
-	}
-
-	testPair := TestPair{
-		[]int{8, 67, 13, 78, 70, 83},
-		[]int{8, 13, 67, 70, 78, 83},
-	}
-
-	result := SortHeapArrayNotMine(testPair.input)
-	if !arrayEqual(result, testPair.expected) {
-		t.Error(
-			"For test pair:", testPair,
-			"Expected:", testPair.expected,
-			"To be equal to:", result,
-		)
 	}
 }

@@ -1,12 +1,9 @@
 package math
 
-import (
-	// "fmt"
-)
+// "fmt"
 
-// Implementation of Selection Sort algorithm
-// Selection Sort algorithm iterates through the list, finds the smallest element and places it
-// at the beginning of the list and then continues iterativeley for the remaining elements
+// SortSelection implements Selection Sort algorithm which implies iteration through the list, find the smallest element and places it
+// at the beginning of the list and then continue iterativeley for the remaining elements
 // until there are no remaining elements to be scanned
 //
 // Complexity analysis:
@@ -37,5 +34,5 @@ func SortSelection(list []int) []int {
 
 	// fmt.Printf("Selection sorted list: %v\n", list)
 
-	return list; 
+	return list
 }

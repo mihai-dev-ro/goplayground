@@ -1,9 +1,5 @@
 package math
 
-import (
-	"fmt"
-)
-
 // SortHeapArrayNotMine is implementing the solution found here:
 // https://www.geeksforgeeks.org/heap-sort/
 func SortHeapArrayNotMine(list []int) []int {
@@ -13,13 +9,11 @@ func SortHeapArrayNotMine(list []int) []int {
 	}
 
 	n := len(list)
-	for i := n/2 - 1; i > 0; i-- {
+	for i := n/2 - 1; i >= 0; i-- {
 		heapifyNotMine(list, n, i)
 	}
 
-	fmt.Printf("Heapified list: %v\n", list)
-
-	// one by one extract an elemengt from the heap
+	// one by one extract an element from the heap
 	for i := n - 1; i >= 0; i-- {
 		// move the first which is the greatest integer to the last position
 		list[0], list[i] = list[i], list[0]

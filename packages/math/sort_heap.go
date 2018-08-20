@@ -170,9 +170,9 @@ func (currentNode *HeapTreeNode) displayTree() string {
 	formatNode := func(node *HeapTreeNode) string {
 		if node == nil {
 			return "nil"
-		} else {
-			return fmt.Sprint(node.value)
 		}
+
+		return fmt.Sprint(node.value)
 	}
 
 	traversalQueue := new(Queue)
@@ -225,13 +225,16 @@ func (currentNode *HeapTreeNode) addChild(val int) *HeapTreeNode {
 		return nil
 	}
 
+	var nodeInserted *HeapTreeNode
 	if currentNode.left == nil {
 		currentNode.left = &HeapTreeNode{value: val, parent: currentNode}
-		return currentNode.left
+		nodeInserted = currentNode.left
 	} else {
 		currentNode.right = &HeapTreeNode{value: val, parent: currentNode}
-		return currentNode.right
+		nodeInserted = currentNode.right
 	}
+
+	return nodeInserted
 }
 
 func (currentNode *HeapTreeNode) setChildLeft(node *HeapTreeNode) {
