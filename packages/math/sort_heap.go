@@ -1,19 +1,18 @@
 package math
 
 import (
-	 "fmt"
+	"fmt"
 )
 
-// Implementation of Heap Sort algorithm
-// Heap Sort is an algorithm that implies building a heap data structure (which is a tree that 
+// SortHeap implements the Heap Sort algorithm that implies building a heap data structure (which is a tree that
 // has the nodes arranged in a certain/chosen order: max-heap or min-heap. A max-heap tree has the property
-// that each parent node has a greater value that each of child nodes) and then progressively moving the 
-// root of the tree to append/prepend the sorted list. 
-// After each move of the root of the tree to the sorted list, we must re-arrange the heap data structure so 
+// that each parent node has a greater value that each of child nodes) and then progressively moving the
+// root of the tree to append/prepend the sorted list.
+// After each move of the root of the tree to the sorted list, we must re-arrange the heap data structure so
 // that it remains a valid heap
 //
 // Complexity analysis
-//    - time complexity: 
+//    - time complexity:
 //    - space complexity:
 func SortHeap(list []int) []int {
 	//fmt.Printf("Input list: %v\n", list)
@@ -28,11 +27,13 @@ func SortHeap(list []int) []int {
 
 	// extract values for the heap tree into the sorted list
 	result := make([]int, len(list))
-	index := len(result) - 1 
+	index := len(result) - 1
+	// fmt.Println(tree.displayTree())
 	for tree != nil && index >= 0 {
 		result[index] = tree.value
 		index--
 		tree = tree.removeRootAndRearrange2()
+		// fmt.Println(tree.displayTree())
 	}
 
 	//fmt.Printf("Heapsort sorted list: %v\n", result)
@@ -46,11 +47,10 @@ func heapifyList(list []int) *HeapTreeNode {
 	var availableParentsQueue = new(Queue)
 	var availableParent *HeapTreeNode
 
-
 	for _, val := range list {
 		if treeRoot == nil {
-			treeRoot = &HeapTreeNode{ value:val }
-			availableParentsQueue.enqueue(&QueueElement{ value:treeRoot })
+			treeRoot = &HeapTreeNode{value: val}
+			availableParentsQueue.enqueue(&QueueElement{value: treeRoot})
 			continue
 		} else {
 			if availableParent == nil || availableParent.numberOfChildren() == 2 {
@@ -58,7 +58,7 @@ func heapifyList(list []int) *HeapTreeNode {
 			}
 			newNode := insertValue(availableParent, val)
 			// new nodes added to the queue in the order they are added
-			availableParentsQueue.enqueue(&QueueElement{ value:newNode })
+			availableParentsQueue.enqueue(&QueueElement{value: newNode})
 		}
 	}
 
@@ -66,24 +66,23 @@ func heapifyList(list []int) *HeapTreeNode {
 }
 
 func insertValue(parentNode *HeapTreeNode, val int) *HeapTreeNode {
-	
+
 	if parentNode == nil {
 		panic("Parent node should never be empty. Is the liaison required by the new node to be created")
 	}
 
 	// add the new value to the data structure
 	var insertedNode = parentNode.addChild(val)
-	
 
 	// 2. re-arrange nodes so that the data structure remains a valid max-heap data structure
 	isSwapPerformed := true
 	node := insertedNode
 	for isSwapPerformed && node.parent != nil {
-		
+
 		if node.value > node.parent.value {
 			node.swap(node.parent)
 			isSwapPerformed = true
-			node = node.parent			
+			node = node.parent
 		} else {
 			isSwapPerformed = false
 		}
@@ -92,53 +91,53 @@ func insertValue(parentNode *HeapTreeNode, val int) *HeapTreeNode {
 	return insertedNode
 }
 
-// Implementation of Queue (FIFO) data structure used in breadth-first traversal of the Heap data 
+// Queue (FIFO) data structure used in breadth-first traversal of the Heap data
 type Queue struct {
 	front *QueueElement
-	rear *QueueElement
-	size int
-} 
+	rear  *QueueElement
+	size  int
+}
 
 // Enqueue a new element at the end of the queueu
-func (this *Queue) enqueue(n *QueueElement) {
-	if this.size == 0 {
-		this.front = n
-		this.rear = this.front
-		this.size = 1
+func (queue *Queue) enqueue(n *QueueElement) {
+	if queue.size == 0 {
+		queue.front = n
+		queue.rear = queue.front
+		queue.size = 1
 		return
 	}
 
-	this.rear.next = n
-	this.rear = n
-	this.size++
+	queue.rear.next = n
+	queue.rear = n
+	queue.size++
 }
 
-// Dequeue the element ot the front of the queueu 
-func (this *Queue) dequeue() *QueueElement {
-	if this.size == 0 {
+// Dequeue the element ot the front of the queueu
+func (queue *Queue) dequeue() *QueueElement {
+	if queue.size == 0 {
 		return nil
 	}
 
-	front := this.front
-	this.front = this.front.next
-	this.size--
+	front := queue.front
+	queue.front = queue.front.next
+	queue.size--
 
-	if this.size == 0 {
-		this.front = nil
-		this.rear = nil
+	if queue.size == 0 {
+		queue.front = nil
+		queue.rear = nil
 	}
 
 	return front
 }
 
 // Get the length of the queue
-func (this *Queue) len() int {
-	return this.size
+func (queue *Queue) len() int {
+	return queue.size
 }
 
 // implement method of stringer interface
-func (this *Queue) String() string {
-	el := this.front
+func (queue *Queue) String() string {
+	el := queue.front
 
 	var stringBuilder string
 	stringBuilder = fmt.Sprintln("BEGIN: Queue elements")
@@ -147,139 +146,197 @@ func (this *Queue) String() string {
 		el = el.next
 	}
 	stringBuilder = fmt.Sprintln(stringBuilder, "END")
-	return stringBuilder 
-} 
+	return stringBuilder
+}
 
-// Queue Element is defining the structure of each element in the queue
+// QueueElement is defining the structure of each element in the queue
 type QueueElement struct {
 	value *HeapTreeNode
-	next *QueueElement
+	next  *QueueElement
 }
 
-// Node type of a Max-Heap Data Structure
+// HeapTreeNode is defining the node of a Max-Heap Data Structure
 type HeapTreeNode struct {
-	value int
+	value  int
 	parent *HeapTreeNode
-	left *HeapTreeNode
-	right *HeapTreeNode
+	left   *HeapTreeNode
+	right  *HeapTreeNode
 }
 
-func (this *HeapTreeNode) displayTree() string {
+func (currentNode *HeapTreeNode) displayTree() string {
 	var stringBuilder string
 	stringBuilder = fmt.Sprintf("\nBEGIN: Tree elements -> traversal breadth-first\n")
 
+	formatNode := func(node *HeapTreeNode) string {
+		if node == nil {
+			return "nil"
+		} else {
+			return fmt.Sprint(node.value)
+		}
+	}
+
 	traversalQueue := new(Queue)
-	node := this
+	node := currentNode
 	for node != nil {
-		stringBuilder = fmt.Sprintln(stringBuilder, "node: ", node.value, "parent", node.parent, "left", node.left, "right", node.right)
+		stringBuilder = fmt.Sprintln(
+			stringBuilder,
+			"node: ", node.value,
+			"parent", formatNode(node.parent),
+			"left", formatNode(node.left),
+			"right", formatNode(node.right),
+		)
 
 		// breadth-first traversal
-		if node.left != nil { traversalQueue.enqueue(&QueueElement{ value:node.left }) }
-		if node.right != nil { traversalQueue.enqueue(&QueueElement{ value:node.right }) }
+		if node.left != nil {
+			traversalQueue.enqueue(&QueueElement{value: node.left})
+		}
+		if node.right != nil {
+			traversalQueue.enqueue(&QueueElement{value: node.right})
+		}
 
 		// get the next in queue
 		nodeEl := traversalQueue.dequeue()
-		if nodeEl == nil { break }
+		if nodeEl == nil {
+			break
+		}
 
 		// try to insert node
 		node = nodeEl.value
 	}
 
 	stringBuilder = fmt.Sprintln(stringBuilder, "END")
-	return stringBuilder 
+	return stringBuilder
 }
 
 // Method to get the number of children
-func (this *HeapTreeNode) numberOfChildren() int {
+func (currentNode *HeapTreeNode) numberOfChildren() int {
 	result := 0
-	if this.left != nil { result++ }
-	if this.right != nil { result++ }
+	if currentNode.left != nil {
+		result++
+	}
+	if currentNode.right != nil {
+		result++
+	}
 	return result
 }
 
-func (this *HeapTreeNode) addChild(val int) *HeapTreeNode {
-	if this.numberOfChildren() == 2 {
+func (currentNode *HeapTreeNode) addChild(val int) *HeapTreeNode {
+	if currentNode.numberOfChildren() == 2 {
 		return nil
 	}
 
-	if this.left == nil {
-		this.left = &HeapTreeNode{ value: val, parent: this }
-		return this.left
+	if currentNode.left == nil {
+		currentNode.left = &HeapTreeNode{value: val, parent: currentNode}
+		return currentNode.left
 	} else {
-		this.right = &HeapTreeNode{ value: val, parent: this }
-		return this.right
+		currentNode.right = &HeapTreeNode{value: val, parent: currentNode}
+		return currentNode.right
 	}
 }
 
-func (this *HeapTreeNode) setChildLeft(node *HeapTreeNode){
-	this.left = node
-	if node != nil { this.left.parent = this }
+func (currentNode *HeapTreeNode) setChildLeft(node *HeapTreeNode) {
+	currentNode.left = node
+	if node != nil {
+		currentNode.left.parent = currentNode
+	}
 }
 
-func (this *HeapTreeNode) setChildRight(node *HeapTreeNode){
-	this.right = node
-	if node != nil { this.right.parent = this }
+func (currentNode *HeapTreeNode) setChildRight(node *HeapTreeNode) {
+	currentNode.right = node
+	if node != nil {
+		currentNode.right.parent = currentNode
+	}
 }
 
-func (this *HeapTreeNode) swap(other *HeapTreeNode) {
-	this.value, other.value = other.value, this.value
+func (currentNode *HeapTreeNode) swap(other *HeapTreeNode) {
+	currentNode.value, other.value = other.value, currentNode.value
 }
 
-func (this *HeapTreeNode) removeRootAndRearrange2() *HeapTreeNode {
+func (currentNode *HeapTreeNode) removeRootAndRearrange2() *HeapTreeNode {
 
 	var maxUInt = ^uint(0)
 	var maxInt = int(maxUInt >> 1)
 	var minInt = ^maxInt
 
-	if this.numberOfChildren() == 0 {
+	if currentNode.numberOfChildren() == 0 {
 		return nil
 	}
-	
-	// set the value as minInt and then swap it until it arrives at the leaves level and then delete it
-	this.value = minInt
 
-	node := this
+	// set the value as minInt and then swap it until it arrives at the leaves level and then delete it
+	currentNode.value = minInt
+
+	node := currentNode
 	for node.numberOfChildren() > 0 {
-		
 		if node.numberOfChildren() == 1 {
-			if node.left != nil { node.swap(node.left); node = node.left }
-			if node.right != nil { node.swap(node.right); node = node.right }
-		} else if node.numberOfChildren() == 2{
+			var nextNode *HeapTreeNode
+			if node.left != nil {
+				nextNode = node.left
+			}
+			if node.right != nil {
+				nextNode = node.right
+			}
+
+			// swap the the nodes
+			node.swap(nextNode)
+			node.setChildLeft(nextNode.left)
+			node.setChildRight(nextNode.right)
+
+			// set the node as the next node and clear children
+			node = nextNode
+			node.setChildLeft(nil)
+			node.setChildRight(nil)
+		} else if node.numberOfChildren() == 2 {
 			if node.left.value > node.right.value {
-				node.swap(node.left) 
+				node.swap(node.left)
 				node = node.left
 			} else {
-				node.swap(node.right) 
+				node.swap(node.right)
 				node = node.right
 			}
-		} 
+		}
 	}
 
-	// remove the links of the node
-	if node == node.parent.left { node.parent.left = nil }
-	if node == node.parent.right { node.parent.right = nil }
+	// remove it
+	if node == node.parent.left {
+		node.parent.left = nil
+	}
+	if node == node.parent.right {
+		node.parent.right = nil
+	}
 	node.parent = nil
-	
-	return this
+
+	return currentNode
 }
 
-func (this *HeapTreeNode) removeRootAndRearrange() *HeapTreeNode {
-	if this.numberOfChildren() == 0 {
+func (currentNode *HeapTreeNode) removeRootAndRearrange() *HeapTreeNode {
+	if currentNode.numberOfChildren() == 0 {
 		return nil
 	}
-	if (this.numberOfChildren() == 1) {
-		if this.left != nil { this.left.parent = nil; return this.left }
-		if this.right != nil { this.right.parent = nil; return this.right }
+	if currentNode.numberOfChildren() == 1 {
+		if currentNode.left != nil {
+			currentNode.left.parent = nil
+			return currentNode.left
+		}
+		if currentNode.right != nil {
+			currentNode.right.parent = nil
+			return currentNode.right
+		}
 	}
 
 	var rearrangeNode func(*HeapTreeNode) *HeapTreeNode
 	rearrangeNode = func(node *HeapTreeNode) *HeapTreeNode {
-		if node.numberOfChildren() == 0 { return nil }
-		if node.numberOfChildren() == 1 {
-			if node.left != nil { return node.left }
-			if node.right != nil { return node.right }
+		if node.numberOfChildren() == 0 {
+			return nil
 		}
-		
+		if node.numberOfChildren() == 1 {
+			if node.left != nil {
+				return node.left
+			}
+			if node.right != nil {
+				return node.right
+			}
+		}
+
 		var newRoot *HeapTreeNode
 		if node.left.value > node.right.value {
 			newRoot = node.left
@@ -294,7 +351,7 @@ func (this *HeapTreeNode) removeRootAndRearrange() *HeapTreeNode {
 		return newRoot
 	}
 
-	newTree := rearrangeNode(this)
+	newTree := rearrangeNode(currentNode)
 	newTree.parent = nil
 	return newTree
 }
