@@ -5,7 +5,7 @@ package math
 // requires that each level in the tree is complete before filling up nodes on a lower level
 //
 // Complexity analysis
-//    - time complexity:
+//    - time complexity: O(n*log(n))
 //    - space complexity: O(1)
 func SortHeapArray(list []int) []int {
 	// fmt.Printf("Input list: %v\n", list)

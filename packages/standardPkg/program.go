@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"path/filepath"
 	"os"
+	"path/filepath"
 	"sync"
 	"time"
 )
@@ -15,7 +15,7 @@ func main() {
 func dirWalk() {
 	filepath.Walk("/Volumes/Workspace/GoWorkspace", func(path string, info os.FileInfo, err error) error {
 		fmt.Println(path, "|", info.Name(), "Size", info.Size(), "IsDir", info.IsDir(), "file mode", info.Mode())
-		return nil	
+		return nil
 	})
 }
 
@@ -28,7 +28,7 @@ func mutexExample() {
 			fmt.Println("Start lock", i)
 			time.Sleep(time.Millisecond * 500)
 			fmt.Println("End lock", i)
-			m.Unlock()	
+			m.Unlock()
 		}(i)
 	}
 

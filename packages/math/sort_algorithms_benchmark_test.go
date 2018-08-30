@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-var listSize = 1 << 16
+var listSize = 1 << 14
 var MaxUInt = ^uint(0)
 var MaxInt = int(MaxUInt >> 52)
 
@@ -16,6 +16,7 @@ var sortAlgorithms = map[string]interface{}{
 	"SortBubble":           SortBubble,
 	"SortMerge":            SortMerge,
 	"SortQuicksort":        SortQuicksort,
+	"SortBinary":           SortBinary,
 	"SortSelection":        SortSelection,
 	"SortInsertion":        SortInsertion,
 	"SortHeap":             SortHeap,
